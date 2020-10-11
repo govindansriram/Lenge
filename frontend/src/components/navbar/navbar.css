@@ -1,0 +1,26 @@
+.user-nav {
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #3CB371;
+    width: 100%;
+    z-index: 4;
+    position: fixed;
+    height: 70px;
+    
+}
+
+.navbar-brand {
+    display: block;
+    margin-left: 10px;
+    margin-right: auto;
+    width: 40px;
+}
+
+.the-nav {
+    flex-flow: row wrap;
+}
+
+.item-nav {
+    margin: 10px;
+    
+}
