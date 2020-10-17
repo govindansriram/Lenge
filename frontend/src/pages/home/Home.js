@@ -1,14 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import NavBar from './components/navbar/navbar';
+import './Home.css';
+import NavBar from '../../components/navbar/navbar';
 
-function App() {
+function Home() {
   return (
     <div className="App">
       <NavBar></NavBar>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -25,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;
