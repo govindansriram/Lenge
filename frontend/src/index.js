@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
-import Home from './pages/home/Home';
+import Routing from './routes';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Home />
+    <Routing />
   </React.StrictMode>,
   document.getElementById('root')
 );

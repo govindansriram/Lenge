@@ -1,12 +1,37 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Home from "./pages/home/Home"
+import StrengthWorkouts from "./pages/workouts/StrengthWorkouts"
+import CardioWorkouts from "./pages/workouts/CardioWorkouts";
+import SignUp from "./pages/signUp/SignUp";
+import LogIn from "./pages/login/LogIn";
+import Profile from "./pages/profile/Profile";
 export default function Routes(props) {
   //Add new routes in this array
   const routes = [
     {
       path: "/",
       component: Home
+    },
+    {
+      path: "/strengthworkouts",
+      component: StrengthWorkouts
+    },
+    {
+      path: "/cardioworkouts",
+      component: CardioWorkouts
+    },
+    {
+      path: "/signUp",
+      component: SignUp
+    },
+    {
+      path: "/logIn",
+      component: LogIn
+    },
+    {
+      path: "/profile",
+      component: Profile
     }
   ];
   return (
