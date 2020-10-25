@@ -24,25 +24,27 @@ const NavBar = (props) => {
   return (
     <div className="user-nav" >
       <Navbar light expand="md">
-        <NavbarBrand className="d-flex align-items-end" href="/">
+        <NavbarBrand className="logo d-flex align-items-end" href="/">
             Lenge
             <img className="navbar-brand" src={logo} alt="dumbbell-img"></img>
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className='ml-auto d-flex align-items-end the-nav' navbar>
-            <NavItem className="item-nav">
-              <NavLink href="/components/">Stats</NavLink>
+          <Nav className='ml-auto the-nav' navbar>
+            <NavItem>
+              <NavLink href="/profile" className="item-nav">
+                Profile
+              </NavLink>
             </NavItem>
             <UncontrolledDropdown className="item-nav" nav inNavbar>
               <DropdownToggle nav caret>
-                Log In / Sign Up
+                Sign In
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
+                <DropdownItem href="/signUp">
                   Sign Up
                 </DropdownItem>
-                <DropdownItem>
+                <DropdownItem href="/logIn">
                   Log In
                 </DropdownItem>
               </DropdownMenu>
