@@ -1,19 +1,26 @@
 .user-nav {
     font-size: 20px;
     font-weight: bold;
-    background-color: #3CB371;
+    background-color: rgb(85, 201, 137);
     width: 100%;
     z-index: 4;
     position: fixed;
-    height: 70px;
+    height: 60px;
     
 }
 
 .navbar-brand {
-    display: block;
     margin-left: 10px;
     margin-right: auto;
     width: 40px;
+}
+
+.logo {
+    float: left;
+    margin-left: 20px;
+    font-weight: bold;
+    display: flex;
+    text-align: center;
 }
 
 .the-nav {
@@ -21,6 +28,9 @@
 }
 
 .item-nav {
-    margin: 10px;
-    
+    margin-right: 12px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: black;
 }
