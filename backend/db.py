@@ -2,9 +2,10 @@ from flask import Flask
 from flask_pymongo import pymongo
 from app import app
 import json
+import ssl
 
-CONNECTION_STRING = "mongodb+srv://sgovindan:diamonds@lengecluster.b86st.mongodb.net/workoutOptions?retryWrites=true&w=majority"
-client = pymongo.MongoClient(CONNECTION_STRING)
+CONNECTION_STRING = "mongodb+srv://nboursalian:nanlal@lengecluster.b86st.mongodb.net/workoutOptions?retryWrites=true&w=majority"
+client = pymongo.MongoClient(CONNECTION_STRING, ssl_cert_reqs=ssl.CERT_NONE)
 db = client.workoutOptions
 
 
