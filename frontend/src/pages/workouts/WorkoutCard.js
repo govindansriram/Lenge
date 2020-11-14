@@ -1,47 +1,64 @@
-import React, { Component } from 'react';
-import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
-import { Redirect } from 'react-router-dom'
+import React from "react";
+import { Card, CardBody, CardTitle, CardText } from "reactstrap";
+import { Redirect } from "react-router-dom";
 
-import './WorkoutCard.css';
+import "./WorkoutCard.css";
 
-export default class WorkoutCard extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      redirect: false
-    };
-  }
+export const WorkoutCard = props => (
+  <div className="card-wrapper">
+    {/* {this.renderRedirect()} */}
+    <Card>
+      <CardBody>
+        <CardTitle className="card-text-diff">
+          {props.workout.exercise1}
+        </CardTitle>
+        <CardText className="card-text-time">
+          Reps: {props.workout.rep1}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Rest Time: {props.workout.restTime1}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Sets: {props.workout.set1}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Weight: {props.workout.weight1}
+        </CardText>
+        <hr />
+        <CardTitle className="card-text-diff">
+          {props.workout.exercise2}
+        </CardTitle>
+        <CardText className="card-text-time">
+          Reps: {props.workout.rep2}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Rest Time: {props.workout.restTime2}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Sets: {props.workout.set2}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Weight: {props.workout.weight2}
+        </CardText>
+        <hr />
+        <CardTitle className="card-text-diff">
+          {props.workout.exercise3}
+        </CardTitle>
+        <CardText className="card-text-time">
+          Reps: {props.workout.rep3}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Rest Time: {props.workout.restTime3}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Sets: {props.workout.set3}
+        </CardText>
+        <CardText className="card-text-exercises">
+          Weight: {props.workout.weight3}
+        </CardText>
+      </CardBody>
+    </Card>
+  </div>
+);
 
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    })
-  }
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/profile' />
-    }
-  }
-
-  render() {
-    return (
-
-      <div className='card-wrapper'>
-        {this.renderRedirect()}
-        <Card onClick={this.setRedirect}>;
-          <CardBody>
-            <CardTitle className="card-text-diff">{this.props.workout.difficulty}</CardTitle>
-            <hr/>
-            <CardText className="card-text-time">{this.props.workout.time}</CardText>
-            <hr/>
-
-            {/* map this later */}
-            <CardText className="card-text-exercises">{this.props.workout.exercise1}</CardText>
-            <CardText className="card-text-exercises">{this.props.workout.exercise2}</CardText>
-            <CardText className="card-text-exercises">{this.props.workout.exercise3}</CardText>
-          </CardBody>
-        </Card>
-      </div>
-    );
-  }
-}
+export default WorkoutCard;

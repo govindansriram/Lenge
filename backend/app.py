@@ -1,12 +1,29 @@
 import json
 
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import db
+
+from flask_jwt_extended import JWTManager 
+from flask_jwt_extended import create_access_token
+from flask_pymongo import PyMongo 
+from bson.objectid import ObjectId 
+from flask_bcrypt import Bcrypt 
+
 from CardioWorkout import CardioWorkout
 from StrengthCard import StrengthCard
 from User import User
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['MONGO_DBNAME'] = 'workoutOptions'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/workoutOptions'
+app.config['JWT_SECRET_KEY'] = 'secret'
+
+mongo = PyMongo(app)
+bcrypt = Bcrypt(app)
+jwt = JWTManager(app)
 
 
 @app.route('/')
@@ -56,10 +73,10 @@ def get_workouts(email, difficulty):
     work_five = StrengthCard(difficulty).make_megadict()
     if not db.collec_exist(email):
         card_dict = {"Workout_One": work_one,
-                     "Workout_Two:": work_two,
-                     "Workout_Three:": work_three,
-                     "Workout_Four:": work_four,
-                     "Workout_Five:": work_five
+                     "Workout_Two": work_two,
+                     "Workout_Three": work_three,
+                     "Workout_Four": work_four,
+                     "Workout_Five": work_five
                      }
         return jsonify(card_dict), "does not exist"
     else:
@@ -87,7 +104,7 @@ def add_cardio(email):
     temp_val.exercise = user_cardio['Exercise_One']
     temp_val.exercise_two = user_cardio['Exercise_Two']
     temp_val.exercise_three = user_cardio['Exercise_Three']
-    temp_val.circuit_sets = user_cardio['Circuit sets']
+    temp_val.circuit_sets = user_cardio['Circuit_sets']
     temp_dict = temp_val.make_dict()
     db.insert_workout(email, temp_dict)
     return "Connected to the data base and added new_user!"
@@ -102,10 +119,10 @@ def get_cardio(email, difficulty):
     cardio_five = CardioWorkout(difficulty).make_dict()
     if not db.collec_exist(email):
         cardio_dict = {"Cardio_One": cardio_one,
-                       "Cardio Two": cardio_two,
-                       "Cardio Three": cardio_three,
-                       "Cardio Four": cardio_four,
-                       "Cardio Five": cardio_five}
+                       "Cardio_Two": cardio_two,
+                       "Cardio_Three": cardio_three,
+                       "Cardio_Four": cardio_four,
+                       "Cardio_Five": cardio_five}
         return jsonify(cardio_dict), "does not exist"
     else:
         name = email + ' Collection'
@@ -116,11 +133,59 @@ def get_cardio(email, difficulty):
                     or cardio_five == workout:
                 get_cardio(email, difficulty)
             cardio_dict = {"Cardio_One": cardio_one,
-                           "Cardio Two": cardio_two,
-                           "Cardio Three": cardio_three,
-                           "Cardio Four": cardio_four,
-                           "Cardio Five": cardio_five}
+                           "Cardio_Two": cardio_two,
+                           "Cardio_Three": cardio_three,
+                           "Cardio_Four": cardio_four,
+                           "Cardio_Five": cardio_five}
             return jsonify(cardio_dict)
+
+@app.route('/users/register', methods=["POST"])
+def register():
+    users = db.emails
+    first_name = request.get_json()['first_name']
+    last_name = request.get_json()['last_name']
+    email = request.get_json()['email']
+    password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+
+    user_id = users.insert({
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email,
+        'password': password
+    })
+
+    new_user = users.find_one({'_id': user_id})
+
+    result = {'email': new_user['email'] + ' registered'}
+
+    return jsonify({'result' : result})
+
+
+@app.route('/users/login', methods=['POST'])
+def login():
+    users = db.emails
+    email = request.get_json()['email']
+    password = request.get_json()['password']
+    result = ""
+    error_message = "Invalid email and/or password."
+
+    response = users.find_one({'email': email})
+
+    if response:
+        if bcrypt.check_password_hash(response['password'], password.encode('utf-8')):
+            access_token = create_access_token(identity = {
+                'first_name': response['first_name'],
+                'last_name': response['last_name'],
+                'email': response['email']
+            })
+            result = jsonify({"token":access_token})
+        else:
+            print("it's error time")
+            result = jsonify({"error":error_message})
+    else:
+        result = jsonify({"result":"No results found"})
+
+    return result 
 
 
 if __name__ == '__main__':

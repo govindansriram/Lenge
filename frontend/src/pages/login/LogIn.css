@@ -1,5 +1,6 @@
 .login {
   text-align: center;
+  background-color: #d1edf2;
 }
 
 .login-header {
@@ -16,4 +17,19 @@
   width: 900px;
   height: 300px;
   margin-top: 40px;
+}
+
+@media all and (min-width: 700px) {
+  .Login {
+    padding: 100px 0;
+  }
+
+  .Login form {
+    margin: 0 auto;
+    max-width: 5000px;
+  }
+}
+
+#label {
+  color: black !important;
 }

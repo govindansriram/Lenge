@@ -8,6 +8,8 @@ CONNECTION_STRING = "mongodb+srv://nboursalian:nanlal@lengecluster.b86st.mongodb
 client = pymongo.MongoClient(CONNECTION_STRING, ssl_cert_reqs=ssl.CERT_NONE)
 db = client.workoutOptions
 
+emails = client.workoutOptions.emails
+
 
 def insert_data(user):
     data = {'first_name': user.first_name, 'last_name': user.last_name, 'email': user.email, 'password': user.password}

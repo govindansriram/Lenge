@@ -24,7 +24,7 @@ export default class Home extends Component {
   render() {
     return (
       <div className="home">
-      <NavBar></NavBar>
+      <NavBar ></NavBar>
       <header className="home-header">
         <img className="home-image" src={home} alt="home-img"></img>
         <div className="banner-text text-center">
@@ -44,6 +44,7 @@ export default class Home extends Component {
             <Link className="cardio-workouts" to="/cardioworkouts">Cardio Workouts</Link>
           </Button>
         </div>
+        
       </header>
     </div>
     )

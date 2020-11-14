@@ -12,6 +12,15 @@
   color: white;
 }
 
+.profile-page{
+  background-color: #d1edf2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
 .profile-image {
   width: 1000px;
   height: 250px;

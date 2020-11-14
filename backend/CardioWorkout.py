@@ -62,6 +62,6 @@ class CardioWorkout:
         mega_dict = {"Exercise_One": self.exercise,
                      "Exercise_Two": self.exercise_two,
                      "Exercise_Three": self.exercise_three,
-                     "Circuit sets": self.circuit_sets
+                     "Circuit_sets": self.circuit_sets
                      }
         return mega_dict
