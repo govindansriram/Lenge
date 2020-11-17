@@ -71,21 +71,28 @@ export default function Profile() {
     fetchPost();
   }, []);
 
-  let cardioCards = pastCardio.map(workout => {
-    return (
-      <li className="flex-item">
-        <CardioCard workout={workout} />
-      </li>
-    );
-  });
+  let cardioCards = null;
+  let strengthCards = null;
 
-  let strengthCards = pastStrength.map(workout => {
-    return (
-      <li className="flex-item">
-        <WorkoutCard workout={workout} />
-      </li>
-    );
-  });
+  if (pastCardio != null) {
+    cardioCards = pastCardio.map(workout => {
+      return (
+        <li className="flex-item">
+          <CardioCard workout={workout} />
+        </li>
+      );
+    });
+  }
+
+  if (pastStrength != null) {
+    strengthCards = pastStrength.map(workout => {
+      return (
+        <li className="flex-item">
+          <WorkoutCard workout={workout} />
+        </li>
+      );
+    });
+  }
 
   return (
     <div className="profile">
@@ -153,7 +160,13 @@ export default function Profile() {
           </Row>
           <Row>
             <Col>
-            <ul className="flex-container wrap-reversez">{strengthCards}</ul>
+              {strengthCards ? (
+                <ul className="flex-container wrap-reversez">
+                  {strengthCards}
+                </ul>
+              ) : (
+                console.log("No strength workouts yet!")
+              )}
             </Col>
           </Row>
         </Container>
@@ -165,7 +178,11 @@ export default function Profile() {
           </Row>
           <Row>
             <Col>
-              <ul className="flex-container wrap-reversez">{cardioCards}</ul>
+              {cardioCards ? (
+                <ul className="flex-container wrap-reversez">{cardioCards}</ul>
+              ) : (
+                console.log("No cardio workouts yet!")
+              )}
             </Col>
           </Row>
         </Container>
