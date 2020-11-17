@@ -5,13 +5,12 @@ import {
   NavbarToggler,
   NavbarBrand,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import { deleteTokens } from "../Authentication";
 
 import "./navbar.css";
 import logo from "./dumbbell.png";
@@ -31,20 +30,27 @@ const NavBar = props => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto the-nav" navbar>
-            <NavItem>
-              <NavLink href="/profile" className="item-nav">
-                Profile
-              </NavLink>
-            </NavItem>
-            <UncontrolledDropdown className="item-nav" nav inNavbar>
+            {props.logged ? (
+              <UncontrolledDropdown className="item-nav" nav inNavbar>
               <DropdownToggle nav caret>
-                Sign In
+                Profile
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem href="/signUp">Sign Up</DropdownItem>
-                <DropdownItem href="/logIn">Log In</DropdownItem>
+                <DropdownItem href="/profile">View Profile</DropdownItem>
+                <DropdownItem onClick={deleteTokens} href="/logIn">Log Out</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
+            ) : (
+              <UncontrolledDropdown className="item-nav" nav inNavbar>
+                <DropdownToggle nav caret>
+                  Sign In
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem href="/signUp">Sign Up</DropdownItem>
+                  <DropdownItem href="/logIn">Log In</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            )}
           </Nav>
         </Collapse>
       </Navbar>

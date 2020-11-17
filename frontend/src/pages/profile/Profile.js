@@ -1,28 +1,50 @@
-import React, { Component, useState, useEffect } from "react";
-import { Card, CardBody, CardTitle, CardText } from "reactstrap";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/navbar/navbar";
+import {
+  CardImg,
+  Card,
+  CardBody,
+  CardTitle,
+  Container,
+  Row,
+  Col
+} from "reactstrap";
+import jwt_decode from "jwt-decode";
 
 import "./Profile.css";
 
+import CardioCard from "../workouts/CardioCard";
+import WorkoutCard from "../workouts/WorkoutCard";
+
 import profile from "./profile.JPG";
-import profilePic from "./pic.JPG";
+
+import { isLoggedIn } from "../../components/Authentication";
 
 export default function Profile() {
-  const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
+  const token = localStorage.getItem("usertoken");
+  const decodedToken = jwt_decode(token);
+
+  const name = decodedToken.identity.first_name;
+  const lastName = decodedToken.identity.last_name;
+  const email = decodedToken.identity.email;
+
+  const [pastCardio, setPastCardio] = useState([]);
+  const [pastStrength, setPastStrength] = useState([]);
 
   useEffect(() => {
     const fetchPost = () => {
-      fetch("http://localhost:8000/users:nanarb@gmail.com", {
-        method: "GET",
-        mode: "cors",
-        headers:{
-          'Content-Type': 'application/json'
+      fetch(
+        "http://localhost:8000/past_workouts:" + email + "/difficulty:Cardio",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      }).then(response =>
+      ).then(response =>
         response.json().then(data => {
-          setName(data.first_name);
+          setPastCardio(data);
         })
       );
     };
@@ -31,95 +53,123 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchPost = () => {
-      fetch("http://localhost:8000/users:nanarb@gmail.com", {
-        method: "GET",
-        mode: "cors",
-        headers:{
-          'Content-Type': 'application/json'
+      fetch(
+        "http://localhost:8000/past_workouts:" + email + "/difficulty:Strength",
+        {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json"
+          }
         }
-      }).then(response =>
+      ).then(response =>
         response.json().then(data => {
-          setLastName(data.last_name);
+          setPastStrength(data);
         })
       );
     };
     fetchPost();
   }, []);
 
-  useEffect(() => {
-    const fetchPost = () => {
-      fetch("http://localhost:8000/users:nanarb@gmail.com", {
-        method: "GET",
-        mode: "cors",
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      }).then(response =>
-        response.json().then(data => {
-          setEmail(data.email);
-        })
-      );
-    };
-    fetchPost();
-  }, []);
+  let cardioCards = pastCardio.map(workout => {
+    return (
+      <li className="flex-item">
+        <CardioCard workout={workout} />
+      </li>
+    );
+  });
+
+  let strengthCards = pastStrength.map(workout => {
+    return (
+      <li className="flex-item">
+        <WorkoutCard workout={workout} />
+      </li>
+    );
+  });
 
   return (
     <div className="profile">
-      <NavBar></NavBar>
+      <NavBar logged={isLoggedIn()} />
       <header className="profile-header">
         <img className="profile-image" src={profile} alt="profile-img"></img>
       </header>
       <div className="profile-page">
-        <img
-          className="profilePic-image"
-          src={profilePic}
-          alt="profilePic-img"
-        ></img>
-        <h1 style={{marginTop: 30}}>{name} {lastName}</h1>
-        <h1 style={{fontSize: 30}}>{email}</h1>
-        <hr />
-        <h1>Past Workouts</h1>
+        <Container>
+          <Row>
+            <Col>
+              <Card className="profile-pic-card" style={{ cursor: "default" }}>
+                <CardImg
+                  className="profilePic-image"
+                  src={"https://robohash.org/" + name}
+                  alt="profilePic-image"
+                />
+                <CardBody>
+                  <CardTitle> </CardTitle>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col className="personal-info">
+              <h1 className="personal-info-label">PERSONAL INFORMATION</h1>
+              <Row>
+                <Col className="name-label">
+                  {" "}
+                  <h1>NAME</h1>
+                </Col>
+                <Col className="profile-name">
+                  {" "}
+                  <h1>
+                    {name} {lastName}
+                  </h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="name-label">
+                  {" "}
+                  <h1>EMAIL</h1>
+                </Col>
+                <Col className="profile-email">
+                  {" "}
+                  <h1>{email}</h1>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="name-label">
+                  {" "}
+                  <h1>TOTAL WORKOUTS</h1>
+                </Col>
+                <Col>
+                  {" "}
+                  {/* <h1>{number of completed workouts will go here}</h1> */}
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+        <Container>
+          <Row>
+            <Col>
+              <h1 className="profile-workouts">My Strength Workouts</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <ul className="flex-container wrap-reversez">{strengthCards}</ul>
+            </Col>
+          </Row>
+        </Container>
+        <Container>
+          <Row>
+            <Col>
+              <h1 className="profile-workouts">My Cardio Workouts</h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ul className="flex-container wrap-reversez">{cardioCards}</ul>
+            </Col>
+          </Row>
+        </Container>
       </div>
     </div>
   );
 }
-
-// export default class Profile extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {};
-//   }
-
-//   componentDidMount() {
-//     fetch("https://jsonplaceholder.typicode.com/todos/1")
-//       .then(response => response.json())
-//       .then(data => console.log(data))
-//   }
-
-//   initTheme() {
-//     let theme = JSON.parse(localStorage.getItem("theme"));
-//     theme && this.setState({ theme: theme });
-//   }
-
-//   render() {
-//       return (
-//     <div className="profile">
-//     <NavBar></NavBar>
-//     <header className="profile-header">
-//       <img className="profile-image" src={profile} alt="profile-img"></img>
-//     </header>
-//     <div className="profile-page">
-//       <img
-//         className="profilePic-image"
-//         src={profilePic}
-//         alt="profilePic-img"
-//       ></img>
-//       {/* <h1>{name}</h1>
-//       <h1>{lastName}</h1>
-//       <h1>{email}</h1> */}
-//       <h1>Above should be the information.</h1>
-//     </div>
-//   </div>
-// );
-//   }
-// }

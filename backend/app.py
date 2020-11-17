@@ -56,12 +56,13 @@ def get_user(email):
 def add_workout(email):
     user_workouts = request.get_json()
     temp_strcard = StrengthCard('Hard')
-    temp_strcard.exercise_one = user_workouts['Exercise_One']
-    temp_strcard.exercise_two = user_workouts['Exercise_Two']
-    temp_strcard.exercise_Three = user_workouts['Exercise_Three']
+    temp_strcard.exercise_one = user_workouts["user_workouts"]['Exercise_One']
+    temp_strcard.exercise_two = user_workouts["user_workouts"]['Exercise_Two']
+    temp_strcard.exercise_Three = user_workouts["user_workouts"]['Exercise_Three']
     this_dict = temp_strcard.make_megadict()
+    this_dict['Workout_Type'] = 'Strength'
     db.insert_workout(email, this_dict)
-    return "Connected to the data base and added new_user!"
+    return "Added strength"
 
 
 @app.route('/email:<email>/difficulty:<difficulty>', methods=['GET'])
@@ -72,27 +73,27 @@ def get_workouts(email, difficulty):
     work_four = StrengthCard(difficulty).make_megadict()
     work_five = StrengthCard(difficulty).make_megadict()
     if not db.collec_exist(email):
-        card_dict = {"Workout_One": work_one,
-                     "Workout_Two": work_two,
-                     "Workout_Three": work_three,
-                     "Workout_Four": work_four,
-                     "Workout_Five": work_five
-                     }
+        card_dict = [work_one,
+                     work_two,
+                     work_three,
+                     work_four,
+                     work_five
+                    ]
         return jsonify(card_dict), "does not exist"
     else:
         name = email + ' Collection'
-        my_col = db[name]
+        my_col = db.db[name]
 
         for workout in my_col.find():
             if work_one == workout or work_two == workout or work_three == workout or work_four == workout \
                     or work_five == workout:
                 get_workouts(email, difficulty)
-        card_dict = {"Workout_One": work_one,
-                     "Workout_Two:": work_two,
-                     "Workout_Three:": work_three,
-                     "Workout_Four:": work_four,
-                     "Workout_Five:": work_five
-                     }
+        card_dict = [work_one,
+                     work_two,
+                     work_three,
+                     work_four,
+                     work_five
+                    ]
 
     return jsonify(card_dict)
 
@@ -101,13 +102,14 @@ def get_workouts(email, difficulty):
 def add_cardio(email):
     user_cardio = request.get_json()
     temp_val = CardioWorkout('Hard')
-    temp_val.exercise = user_cardio['Exercise_One']
-    temp_val.exercise_two = user_cardio['Exercise_Two']
-    temp_val.exercise_three = user_cardio['Exercise_Three']
-    temp_val.circuit_sets = user_cardio['Circuit_sets']
+    temp_val.exercise = user_cardio["user_cardio"]["Exercise_One"]
+    temp_val.exercise_two = user_cardio["user_cardio"]['Exercise_Two']
+    temp_val.exercise_three = user_cardio["user_cardio"]['Exercise_Three']
+    temp_val.circuit_sets = user_cardio["user_cardio"]['Circuit_sets']
     temp_dict = temp_val.make_dict()
+    temp_dict['Workout_Type'] = 'Cardio'
     db.insert_workout(email, temp_dict)
-    return "Connected to the data base and added new_user!"
+    return "Added cardio"
 
 
 @app.route('/cardio:<email>/difficulty:<difficulty>', methods=['GET'])
@@ -118,25 +120,25 @@ def get_cardio(email, difficulty):
     cardio_four = CardioWorkout(difficulty).make_dict()
     cardio_five = CardioWorkout(difficulty).make_dict()
     if not db.collec_exist(email):
-        cardio_dict = {"Cardio_One": cardio_one,
-                       "Cardio_Two": cardio_two,
-                       "Cardio_Three": cardio_three,
-                       "Cardio_Four": cardio_four,
-                       "Cardio_Five": cardio_five}
+        cardio_dict = [cardio_one,
+                       cardio_two,
+                       cardio_three,
+                       cardio_four,
+                       cardio_five]
         return jsonify(cardio_dict), "does not exist"
     else:
         name = email + ' Collection'
-        my_col = db[name]
+        my_col = db.db[name]
 
         for workout in my_col.find():
             if cardio_one == workout or cardio_two == workout or cardio_three == workout or cardio_four == workout \
                     or cardio_five == workout:
                 get_cardio(email, difficulty)
-            cardio_dict = {"Cardio_One": cardio_one,
-                           "Cardio_Two": cardio_two,
-                           "Cardio_Three": cardio_three,
-                           "Cardio_Four": cardio_four,
-                           "Cardio_Five": cardio_five}
+            cardio_dict = [cardio_one,
+                           cardio_two,
+                           cardio_three,
+                           cardio_four,
+                           cardio_five]
             return jsonify(cardio_dict)
 
 @app.route('/users/register', methods=["POST"])
@@ -180,13 +182,16 @@ def login():
             })
             result = jsonify({"token":access_token})
         else:
-            print("it's error time")
             result = jsonify({"error":error_message})
     else:
         result = jsonify({"result":"No results found"})
 
     return result 
 
+@app.route('/past_workouts:<email>/difficulty:<Category>', methods=['GET'])
+def get_past_workouts(email, Category):
+    some_list = db.get_past_workouts(email, Category)
+    return jsonify(some_list)
 
 if __name__ == '__main__':
     app.run(port=8000)

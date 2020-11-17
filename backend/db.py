@@ -44,3 +44,20 @@ def get_user(email):
             return x
 
     return None
+
+
+def get_past_workouts(email, category):
+
+    name = email + ' Collection'
+    workout_collections = db[name]
+
+    past_dict = []
+
+    for x in workout_collections.find():
+        if category == x['Workout_Type']:
+            x.pop('_id')
+            past_dict.append(x)
+    if len(past_dict) == 0:
+        return None
+
+    return past_dict

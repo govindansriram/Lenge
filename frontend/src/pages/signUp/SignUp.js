@@ -1,130 +1,7 @@
-// import React, { useState } from "react";
-// import NavBar from "../../components/navbar/navbar";
-// import { Redirect } from "react-router-dom";
-// import { Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
-
-// import "./SignUp.css";
-
-// import signup from "./signup.JPG";
-
-// export default function SignUp() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [firstName, setFirstName] = useState("");
-//   const [lastName, setLastName] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
-//   const [redirect, setRedirect] = useState(false);
-
-//   function validateForm() {
-//     return (
-//       email.length > 0 &&
-//       password.length > 0 &&
-//       firstName.length > 0 &&
-//       lastName.length > 0
-//     );
-//   }
-
-//   function handleSubmit(event) {
-//     event.preventDefault();
-//     if (confirmPassword !== password) {
-//       alert("Passwords do not match!");
-//     } else {
-//       addUser();
-//       setRedirect(true);
-//       alert("Account Created!");
-//     }
-//   }
-
-//   function addUser() {
-//     return fetch("http://localhost:8000/add_email", {
-//       headers: {
-//         Accept: "application/json",
-//         "Content-Type": "application/json"
-//       },
-//       method: "POST",
-//       body: {
-//         first_name: firstName,
-//         last_name: lastName,
-//         email: email,
-//         password: password
-//       }
-//     });
-//   }
-
-//   function renderRedirect() {
-//     if (redirect) {
-//       return <Redirect to="/" />;
-//     }
-//   }
-//   return (
-//     <div className="signup">
-//       <NavBar></NavBar>
-//       <header className="signup-header">
-//         <img className="signup-image" src={signup} alt="signup-img"></img>
-//         <div className="Signup">
-//           {renderRedirect()}
-//           <form onSubmit={handleSubmit}>
-//             <FormGroup controlId="first-name" bsSize="large">
-//               <ControlLabel id="label">First Name</ControlLabel>
-//               <FormControl
-//                 autoFocus
-//                 type="first-name"
-//                 value={firstName}
-//                 onChange={e => setFirstName(e.target.value)}
-//               />
-//             </FormGroup>
-//             <FormGroup controlId="last-name" bsSize="large">
-//               <ControlLabel id="label">Last Name</ControlLabel>
-//               <FormControl
-//                 autoFocus
-//                 type="last-name"
-//                 value={lastName}
-//                 onChange={e => setLastName(e.target.value)}
-//               />
-//             </FormGroup>
-//             <FormGroup controlId="email" bsSize="large">
-//               <ControlLabel id="label">Email</ControlLabel>
-//               <FormControl
-//                 autoFocus
-//                 type="email"
-//                 value={email}
-//                 onChange={e => setEmail(e.target.value)}
-//               />
-//             </FormGroup>
-//             <FormGroup controlId="password" bsSize="large">
-//               <ControlLabel id="label">Password</ControlLabel>
-//               <FormControl
-//                 value={password}
-//                 onChange={e => setPassword(e.target.value)}
-//                 type="password"
-//               />
-//             </FormGroup>
-//             <FormGroup controlId="password" bsSize="large">
-//               <ControlLabel id="label">Confirm Password</ControlLabel>
-//               <FormControl
-//                 value={confirmPassword}
-//                 onChange={e => setConfirmPassword(e.target.value)}
-//                 type="password"
-//               />
-//             </FormGroup>
-//             <Button
-//               block
-//               bsSize="large"
-//               disabled={!validateForm()}
-//               type="submit"
-//             >
-//               Register
-//             </Button>
-//           </form>
-//         </div>
-//       </header>
-//     </div>
-//   );
-// }
-
 import React, { Component } from "react";
 import { register } from "../../components/UserFunctions";
 import NavBar from "../../components/navbar/navbar";
+import { Link } from 'react-router-dom';
 
 import "./SignUp.css";
 
@@ -235,6 +112,7 @@ class Register extends Component {
                 Sign Up
               </button>
             </form>
+            <Link to="/logIn">Already have an account? Log in!</Link>
           </div>
         </div>
       </div>

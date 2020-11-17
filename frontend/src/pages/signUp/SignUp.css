@@ -1,11 +1,11 @@
 .signup-page {
   text-align: center;
   background-color: #d1edf2;
+  min-height: 120vh;
 }
 
 .signup-header {
   background-color: #d1edf2;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,21 +17,4 @@
   width: 900px;
   height: 350px;
   margin-top: 20px;
-}
-
-@media all and (min-width: 480px) {
-  .Signup {
-    padding: 60px 0;
-  }
-
-  .Signup form {
-    margin: 0 auto;
-    max-width: 320px;
-  }
-}
-
-.Signup form span.help-block {
-  font-size: 14px;
-  padding-bottom: 10px;
-  color: #999;
 }
