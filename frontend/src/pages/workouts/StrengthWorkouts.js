@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import NavBar from "../../components/navbar/navbar";
+import { Button, ButtonGroup } from "reactstrap";
 
 import "./StrengthWorkouts.css";
 
@@ -10,17 +11,31 @@ import { isLoggedIn } from "../../components/Authentication";
 import strength from "./strength.JPG";
 import WorkoutCard from "./WorkoutCard";
 
-export default function StrengthWorkouts() {
+class StrengthWorkouts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      strengthWorkouts: [],
+      difficulty: "",
+    };
 
-  const [strengthWorkouts,setStrengthWorkouts] = useState([]);
+    this.onChange = this.onChange.bind(this);
+  }
 
-  const token = localStorage.getItem("usertoken");
-  const decodedToken = jwt_decode(token);
-  const email = decodedToken.identity.email;
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-  useEffect(() => {
-    const fetchPost = () => {
-      fetch("http://localhost:8000/email:" + email + "/difficulty:medium", {
+  changeDifficulty(difficulty)
+  {
+
+    this.state.difficulty = difficulty;
+
+    const token = localStorage.getItem("usertoken");
+    const decodedToken = jwt_decode(token);
+    const email = decodedToken.identity.email;
+
+    fetch("http://localhost:8000/email:" + email + "/difficulty:" + difficulty, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -28,29 +43,39 @@ export default function StrengthWorkouts() {
         }
       }).then(response =>
         response.json().then(data => {
-          setStrengthWorkouts(data);
+          this.setState({strengthWorkouts: data})
         })
       );
-    };
-    fetchPost();
-  }, []);
+  }
 
-
-  let workoutCards = strengthWorkouts.map(workout => {
+  render() {
+    let workoutCards = this.state.strengthWorkouts.map(workout => {
+      return (
+        <li className="flex-item">
+          <WorkoutCard workout={workout} />
+        </li>
+      );
+    });
     return (
-      <li className="flex-item">
-        <WorkoutCard workout={workout} />
-      </li>
+      <div className="workouts">
+        <NavBar logged={isLoggedIn()} />{" "}
+        <header className="workouts-header">
+          <img className="strength-image" src={strength} alt="strength-img"></img>
+          <ButtonGroup>
+            <Button onClick={() => this.changeDifficulty("easy")}>Easy</Button>
+            <Button onClick={() => this.changeDifficulty("medium")}>Medium</Button>
+            <Button onClick={() => this.changeDifficulty("hard")}>Hard</Button>
+          </ButtonGroup>
+          {this.state.difficulty ? (
+            <h1 className="difficulty-label">difficulty: {this.state.difficulty}</h1>
+          ) : (
+            <h1 className="difficulty-label">select a difficulty</h1>
+          )}
+          <ul className="flex-container wrap-reversez">{workoutCards}</ul>
+        </header>
+      </div>
     );
-  });
-
-  return (
-    <div className="workouts">
-      <NavBar logged={isLoggedIn()} />{" "}
-      <header className="workouts-header">
-        <img className="strength-image" src={strength} alt="strength-img"></img>
-        <ul className="flex-container wrap-reversez">{workoutCards}</ul>
-      </header>
-    </div>
-  );
+  }
 }
+
+export default StrengthWorkouts;

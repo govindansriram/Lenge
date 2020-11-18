@@ -145,7 +145,7 @@ return(
           Weight: {props.workout.Exercise_Three.Weight}
         </CardText>
       </CardBody>
-      <Button disabled={false} onClick={() => clickStrengthCard(props.workout, history)}>
+      <Button className="add-button" disabled={false} onClick={() => clickStrengthCard(props.workout, history)}>
           Add to Workouts
         </Button>
     </Card>

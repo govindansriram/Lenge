@@ -54,7 +54,7 @@ export const clickCardioCard = (props, history) => {
     "\n    Exercise 3: " +
     props.Exercise_Three +
     "\n\nDaily Motivation \n" +
-    inspiration[randomInteger(0,9)];
+    inspiration[randomInteger(0, 9)];
 
   console.log(props);
   addCardio(props).then(res => {
@@ -90,6 +90,7 @@ export const CardioCard = props => {
           </CardText>
         </CardBody>
         <Button
+          className="add-button"
           disabled={false}
           onClick={() => clickCardioCard(props.workout, history)}
         >

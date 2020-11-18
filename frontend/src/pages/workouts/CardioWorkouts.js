@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { Component, useState, useEffect } from "react";
 import NavBar from "../../components/navbar/navbar";
+import { Button, ButtonGroup } from "reactstrap";
 
 import "./CardioWorkouts.css";
 import "./StrengthWorkouts.css";
@@ -12,46 +13,75 @@ import cardio from "./cardio.JPG";
 
 import CardioCard from "./CardioCard";
 
-export default function CardioWorkouts() {
+class CardioWorkouts extends Component {
+  constructor() {
+    super();
+    this.state = {
+      cardioWorkouts: [],
+      difficulty: "",
+    };
 
-  const [cardioWorkouts, setCardioWorkouts] = useState([]);
+    this.onChange = this.onChange.bind(this);
+  }
 
-  const token = localStorage.getItem("usertoken");
-  const decodedToken = jwt_decode(token);
-  const email = decodedToken.identity.email;
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
-  useEffect(() => {
-    const fetchPost = () => {
-      fetch("http://localhost:8000/cardio:" + email + "/difficulty:medium", {
+  changeDifficulty(difficulty)
+  {
+
+    this.state.difficulty = difficulty;
+
+    const token = localStorage.getItem("usertoken");
+    const decodedToken = jwt_decode(token);
+    const email = decodedToken.identity.email;
+
+    fetch(
+      "http://localhost:8000/cardio:" + email + "/difficulty:" + difficulty,
+      {
         method: "GET",
         mode: "cors",
         headers: {
           "Content-Type": "application/json"
         }
-      }).then(response =>
-        response.json().then(data => {
-          setCardioWorkouts(data);
-        })
-      );
-    };
-    fetchPost();
-  }, []);
-
-  let workoutCards = cardioWorkouts.map(workout => {
-    return (
-      <li className="flex-item">
-        <CardioCard workout={workout} />
-      </li>
+      }
+    ).then(response =>
+      response.json().then(data => {
+        this.setState({cardioWorkouts: data});
+      })
     );
-  });
+  }
 
-  return (
-    <div className="workouts">
-      <NavBar logged={isLoggedIn()} />
-      <header className="workouts-header">
-        <img className="cardio-image" src={cardio} alt="cardio-img"></img>
-        <ul className="flex-container wrap-reversez">{workoutCards}</ul>
-      </header>
-    </div>
-  );
+  render() {
+    let workoutCards = this.state.cardioWorkouts.map(workout => {
+      return (
+        <li className="flex-item">
+          <CardioCard workout={workout} />
+        </li>
+      );
+    });
+    return (
+      <div className="workouts">
+        <NavBar logged={isLoggedIn()} />
+        <header className="workouts-header">
+          <img className="cardio-image" src={cardio} alt="cardio-img"></img>
+          <ButtonGroup>
+            <Button onClick={() => this.changeDifficulty("easy")}>Easy</Button>
+            <Button onClick={() => this.changeDifficulty("medium")}>Medium</Button>
+            <Button onClick={() => this.changeDifficulty("hard")}>Hard</Button>
+          </ButtonGroup>
+          {this.state.difficulty ? (
+            <h1 className="difficulty-label">difficulty: {this.state.difficulty}</h1>
+          ) : (
+            <h1 className="difficulty-label">select a difficulty</h1>
+          )}
+          <ul className="flex-container wrap-reversez">{workoutCards}</ul>
+        </header>
+      </div>
+    );
+  }
 }
+
+export default CardioWorkouts;
+
