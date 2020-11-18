@@ -65,3 +65,14 @@ export const addStrength = workout => {
       });
   };
 
+  export const emailWorkout = (email, title, body) => {
+    fetch('http://localhost:4000/mail', {
+        method: "POST",
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email, title: title, body: body})
+    }).catch(error => console.log(error))
+}
+
