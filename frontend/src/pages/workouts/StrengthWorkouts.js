@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import NavBar from "../../components/navbar/navbar";
 import { Button, ButtonGroup } from "reactstrap";
 
@@ -26,16 +26,16 @@ class StrengthWorkouts extends Component {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  changeDifficulty(difficulty)
+  changeDifficulty(theDifficulty)
   {
 
-    this.state.difficulty = difficulty;
+    this.setState({difficulty: theDifficulty});
 
     const token = localStorage.getItem("usertoken");
     const decodedToken = jwt_decode(token);
     const email = decodedToken.identity.email;
 
-    fetch("http://localhost:8000/email:" + email + "/difficulty:" + difficulty, {
+    fetch("http://localhost:8000/email:" + email + "/difficulty:" + theDifficulty, {
         method: "GET",
         mode: "cors",
         headers: {

@@ -76,7 +76,7 @@ export const clickStrengthCard = (props, history) => {
     "\n        Weight: " +
     props.Exercise_Three.Weight +
     "\n\nDaily Motivation \n" +
-    inspiration[randomInteger(0,9)];
+    inspiration[randomInteger(0, 9)];
 
   addStrength(props).then(res => {
     if (res.data === "Added strength") {
@@ -90,66 +90,70 @@ export const clickStrengthCard = (props, history) => {
   emailWorkout(email, title, body);
 };
 
-
-export const WorkoutCard = (props) => {
+export const WorkoutCard = props => {
   const history = useHistory();
-return(
-  <div className="card-wrapper">
-    <Card>
-      <CardBody>
-        <CardTitle className="card-text-diff">
-          {props.workout.Exercise_One.Exercise}
-        </CardTitle>
-        <CardText className="card-text-time">
-          Reps: {props.workout.Exercise_One.Reps}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Rest Time: {props.workout.Exercise_One.Rest_time}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Sets: {props.workout.Exercise_One.Sets}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Weight: {props.workout.Exercise_One.Weight}
-        </CardText>
-        <hr />
-        <CardTitle className="card-text-diff">
-          {props.workout.Exercise_Two.Exercise}
-        </CardTitle>
-        <CardText className="card-text-time">
-          Reps: {props.workout.Exercise_Two.Reps}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Rest Time: {props.workout.Exercise_Two.Rest_time}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Sets: {props.workout.Exercise_Two.Sets}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Weight: {props.workout.Exercise_Two.Weight}
-        </CardText>
-        <hr />
-        <CardTitle className="card-text-diff">
-          {props.workout.Exercise_Three.Exercise}
-        </CardTitle>
-        <CardText className="card-text-time">
-          Reps: {props.workout.Exercise_Three.Reps}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Rest Time: {props.workout.Exercise_Three.Rest_time}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Sets: {props.workout.Exercise_Three.Sets}
-        </CardText>
-        <CardText className="card-text-exercises">
-          Weight: {props.workout.Exercise_Three.Weight}
-        </CardText>
-      </CardBody>
-      <Button className="add-button" disabled={false} onClick={() => clickStrengthCard(props.workout, history)}>
+  return (
+    <div className="card-wrapper">
+      <Card>
+        <CardBody>
+          <CardTitle className="card-text-diff">
+            {props.workout.Exercise_One.Exercise}
+          </CardTitle>
+          <CardText className="card-text-time">
+            Reps: {props.workout.Exercise_One.Reps}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Rest Time: {props.workout.Exercise_One.Rest_time}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Sets: {props.workout.Exercise_One.Sets}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Weight: {props.workout.Exercise_One.Weight}
+          </CardText>
+          <hr />
+          <CardTitle className="card-text-diff">
+            {props.workout.Exercise_Two.Exercise}
+          </CardTitle>
+          <CardText className="card-text-time">
+            Reps: {props.workout.Exercise_Two.Reps}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Rest Time: {props.workout.Exercise_Two.Rest_time}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Sets: {props.workout.Exercise_Two.Sets}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Weight: {props.workout.Exercise_Two.Weight}
+          </CardText>
+          <hr />
+          <CardTitle className="card-text-diff">
+            {props.workout.Exercise_Three.Exercise}
+          </CardTitle>
+          <CardText className="card-text-time">
+            Reps: {props.workout.Exercise_Three.Reps}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Rest Time: {props.workout.Exercise_Three.Rest_time}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Sets: {props.workout.Exercise_Three.Sets}
+          </CardText>
+          <CardText className="card-text-exercises">
+            Weight: {props.workout.Exercise_Three.Weight}
+          </CardText>
+        </CardBody>
+        <Button
+          className="add-button"
+          style={{ display: props.displayButton }}
+          onClick={() => clickStrengthCard(props.workout, history)}
+        >
           Add to Workouts
         </Button>
-    </Card>
-  </div>
-)};
+      </Card>
+    </div>
+  );
+};
 
 export default WorkoutCard;

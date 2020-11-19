@@ -78,7 +78,7 @@ export default function Profile() {
     cardioCards = pastCardio.map(workout => {
       return (
         <li className="flex-item">
-          <CardioCard workout={workout} />
+          <CardioCard workout={workout} displayButton={"none"} />
         </li>
       );
     });
@@ -88,10 +88,19 @@ export default function Profile() {
     strengthCards = pastStrength.map(workout => {
       return (
         <li className="flex-item">
-          <WorkoutCard workout={workout} />
+          <WorkoutCard workout={workout} displayButton={"none"} />
         </li>
       );
     });
+  }
+
+  var numCardio = 0;
+  var numStrength = 0;
+  if (cardioCards) {
+    numCardio = cardioCards.length;
+  }
+  if (strengthCards) {
+    numStrength = strengthCards.length;
   }
 
   return (
@@ -134,6 +143,8 @@ export default function Profile() {
                   {" "}
                   <h1>EMAIL</h1>
                 </Col>
+              </Row>
+              <Row>
                 <Col className="profile-email">
                   {" "}
                   <h1>{email}</h1>
@@ -144,9 +155,9 @@ export default function Profile() {
                   {" "}
                   <h1>TOTAL WORKOUTS</h1>
                 </Col>
-                <Col>
+                <Col className="num-workouts">
                   {" "}
-                  {/* <h1>{number of completed workouts will go here}</h1> */}
+                  <h1>{numCardio + numStrength}</h1>
                 </Col>
               </Row>
             </Col>

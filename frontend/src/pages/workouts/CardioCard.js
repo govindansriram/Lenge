@@ -91,7 +91,7 @@ export const CardioCard = props => {
         </CardBody>
         <Button
           className="add-button"
-          disabled={false}
+          style={{display: props.displayButton}}
           onClick={() => clickCardioCard(props.workout, history)}
         >
           Add to Workouts
