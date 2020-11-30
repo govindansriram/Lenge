@@ -149,16 +149,13 @@ def register():
     email = request.get_json()['email']
     password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
 
-    user_id = users.insert({
-        'first_name': first_name,
-        'last_name': last_name,
-        'email': email,
-        'password': password
-    })
-
-    new_user = users.find_one({'_id': user_id})
-
-    result = {'email': new_user['email'] + ' registered'}
+    response = users.find_one({'email': email})
+    if response:
+        result = {"error": "Account already exists"}
+    else:
+        user_id = users.insert({'first_name': first_name,'last_name': last_name,'email': email,'password': password})
+        new_user = users.find_one({'_id': user_id})
+        result = {'email': new_user['email'] + ' registered'}
 
     return jsonify({'result' : result})
 

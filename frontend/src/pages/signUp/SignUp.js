@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { register } from "../../components/UserFunctions";
 import NavBar from "../../components/navbar/navbar";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import "./SignUp.css";
 
@@ -36,7 +36,11 @@ class Register extends Component {
     };
 
     register(newUser).then(res => {
-      this.props.history.push("/logIn");
+      if (!res.result.error) {
+        this.props.history.push("/logIn");
+      } else {
+        alert("An account with that email already exists!");
+      }
     });
   }
 
