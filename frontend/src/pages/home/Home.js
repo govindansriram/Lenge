@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Container, Row, Col, Button } from "reactstrap";
 import "./Home.css";
 import NavBar from "../../components/navbar/navbar";
 import { Link } from "react-router-dom";
@@ -7,6 +7,9 @@ import { Link } from "react-router-dom";
 import { isLoggedIn } from "../../components/Authentication";
 
 import home from "./home.JPG";
+import sri from "./sri.JPG";
+import run from "./run.jpg";
+import squat from "./squat.jpg";
 
 export default class Home extends Component {
   constructor(props) {
@@ -51,6 +54,20 @@ export default class Home extends Component {
               </Link>
             </Button>
           </div>
+          <Container fluid className="pic-container">
+            <Row className="pic-row">
+              <Col>
+                <img className="homepage-pic" src={sri} alt="home-img"></img>
+              </Col>
+              <Col>
+                <img className="homepage-pic" src={run} alt="home-img"></img>
+                <h1>For all experience levels!</h1>
+              </Col>
+              <Col>
+                <img className="homepage-pic" src={squat} alt="home-img"></img>
+              </Col>
+            </Row>
+          </Container>
         </header>
       </div>
     );
