@@ -1,85 +1,87 @@
-import React, { Component } from 'react';
-import NavBar from '../../components/navbar/navbar';
+import React, { Component } from "react";
+import NavBar from "../../components/navbar/navbar";
+import { Button, ButtonGroup } from "reactstrap";
 
-import './CardioWorkouts.css';
-import './StrengthWorkouts.css';
+import "./CardioWorkouts.css";
+import "./StrengthWorkouts.css";
 
-import cardio from './cardio.JPG';
+import jwt_decode from "jwt-decode";
 
-import WorkoutCard from './WorkoutCard';
+import { isLoggedIn } from "../../components/Authentication";
 
-export default class CardioWorkouts extends Component {
-  constructor(props) {
-    super(props);
+import cardio from "./cardio.JPG";
+
+import CardioCard from "./CardioCard";
+
+class CardioWorkouts extends Component {
+  constructor() {
+    super();
     this.state = {
-      cardioWorkouts:
-      [
-        {
-          difficulty: "Medium",
-          time: "about 55 minutes",
-          exercise1: "5 min walk",
-          exercise2: "Run 5 miles at 9 min pace",
-          exercise3: "5 min walk"
-        },
-        {
-          difficulty: "Hard",
-          time: "about 1 hr 30 min",
-          exercise1: "5 min warm up - your choice",
-          exercise2: "Run 2 miles",
-          exercise3: "Swim 1000 meters"
-        },
-        {
-          difficulty: "Easy",
-          time: "about 1 hr",
-          exercise1: "Burpees - 10 reps x 10 sets",
-          exercise2: "100m Sprints - 2 reps x 10 sets",
-          exercise3: "Walk 10m - 10 sets"
-        },
-        {
-          difficulty: "Medium",
-          time: "about 45 minutes",
-          exercise1: "Hill Sprints",
-          exercise2: "10 times",
-          exercise3: "(Uphill Only)"
-        },
-        {
-          difficulty: "Hard",
-          time: "about 2 hours",
-          exercise1: "Bike 2 miles",
-          exercise2: "Run 2 miles",
-          exercise3: "Swim 2 miles"
-        }
-      ]
+      cardioWorkouts: [],
+      difficulty: "",
     };
+
+    this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount () {
-    this.initTheme ()
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
-  initTheme () {
-    let theme = JSON.parse(localStorage.getItem('theme'))
-    theme && this.setState({theme:theme})
+  changeDifficulty(theDifficulty)
+  {
+
+    this.setState({difficulty: theDifficulty});
+
+    const token = localStorage.getItem("usertoken");
+    const decodedToken = jwt_decode(token);
+    const email = decodedToken.identity.email;
+
+    fetch(
+      "http://localhost:8000/cardio:" + email + "/difficulty:" + theDifficulty,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    ).then(response =>
+      response.json().then(data => {
+        this.setState({cardioWorkouts: data});
+      })
+    );
   }
 
   render() {
-    let workoutCards = this.state.cardioWorkouts.map(cardioWorkouts => {
+    let workoutCards = this.state.cardioWorkouts.map(workout => {
       return (
         <li className="flex-item">
-          <WorkoutCard workout={cardioWorkouts} />
+          <CardioCard workout={workout} />
         </li>
-      )
-    })
+      );
+    });
     return (
       <div className="workouts">
-      <NavBar></NavBar>
-      <header className="workouts-header">
-        <img className="cardio-image" src={cardio} alt="cardio-img"></img>
-        <ul className="flex-container wrap-reversez">
-          {workoutCards}
-        </ul>
-      </header>
-    </div>
-    )
+        <NavBar logged={isLoggedIn()} />
+        <header className="workouts-header">
+          <img className="cardio-image" src={cardio} alt="cardio-img"></img>
+          <ButtonGroup>
+            <Button onClick={() => this.changeDifficulty("easy")}>Easy</Button>
+            <Button onClick={() => this.changeDifficulty("medium")}>Medium</Button>
+            <Button onClick={() => this.changeDifficulty("hard")}>Hard</Button>
+          </ButtonGroup>
+          {this.state.difficulty ? (
+            <h1 className="difficulty-label">difficulty: {this.state.difficulty}</h1>
+          ) : (
+            <h1 className="difficulty-label">select a difficulty</h1>
+          )}
+          <ul className="flex-container wrap-reversez">{workoutCards}</ul>
+        </header>
+      </div>
+    );
   }
 }
+
+export default CardioWorkouts;
+

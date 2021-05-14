@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Routing from './routes';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <Routing />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById('root')
 );
 

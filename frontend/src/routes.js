@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Home from "./pages/home/Home"
-import StrengthWorkouts from "./pages/workouts/StrengthWorkouts"
-import CardioWorkouts from "./pages/workouts/CardioWorkouts";
+import Home from "./pages/home/Home";
 import SignUp from "./pages/signUp/SignUp";
 import LogIn from "./pages/login/LogIn";
-import Profile from "./pages/profile/Profile";
+import App from "./App";
 export default function Routes(props) {
   //Add new routes in this array
   const routes = [
@@ -15,11 +13,11 @@ export default function Routes(props) {
     },
     {
       path: "/strengthworkouts",
-      component: StrengthWorkouts
+      component: App
     },
     {
       path: "/cardioworkouts",
-      component: CardioWorkouts
+      component: App
     },
     {
       path: "/signUp",
@@ -31,7 +29,7 @@ export default function Routes(props) {
     },
     {
       path: "/profile",
-      component: Profile
+      component: App
     }
   ];
   return (
